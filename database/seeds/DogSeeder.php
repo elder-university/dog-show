@@ -8,7 +8,7 @@ class DogSeeder extends Seeder  {
 
     public function run () {
 
-        factory (Dog::class, 25) -> create ();
+        factory (Dog::class, 30) -> create ();
 
     }
 }
