@@ -18,15 +18,15 @@ class GithubController extends Controller
     /**
      * @return RedirectResponse
      */
-    public function redirect()
+    public function redirect(): RedirectResponse
     {
         return Socialite::driver('github')->redirect();
     }
 
     /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse
      */
-    public function callback()
+    public function callback(): RedirectResponse
     {
         $githubUser = Socialite::driver('github')->user();
 
