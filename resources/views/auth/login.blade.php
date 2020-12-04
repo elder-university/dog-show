@@ -72,6 +72,9 @@
                                 </p>
                             @endif
                         </div>
+                        <div>
+                            <a href="{{ route('github.redirect') }}">Sign in with GitHub</a>
+                        </div>
                     </form>
 
                 </div>
