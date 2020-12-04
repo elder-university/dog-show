@@ -29,15 +29,15 @@ class GithubController extends Controller
      */
     public function callback(): RedirectResponse
     {
-        $githubUser = Socialite::driver('github')->user();
+        $socialiteUser = Socialite::driver('github')->user();
 
         try {
-            $user = $this->findGithubUser($githubUser);
+            $user = $this->findGithubUser($socialiteUser);
         } catch (ModelNotFoundException $exception) {
             try {
-                $user = $this->addGithubIdToExistingUser($githubUser);
+                $user = $this->addGithubIdToExistingUser($socialiteUser);
             } catch (ModelNotFoundException $exception) {
-                $user = $this->createNewUser($githubUser);
+                $user = $this->createNewUser($socialiteUser);
             }
         }
 
@@ -47,44 +47,44 @@ class GithubController extends Controller
     }
 
     /**
-     * @param SocialiteUser $githubUser
+     * @param SocialiteUser $socialiteUser
      * @return User
      */
-    private function createNewUser(SocialiteUser $githubUser): User
+    private function createNewUser(SocialiteUser $socialiteUser): User
     {
         return User::create([
-            'name' => $githubUser->getName(),
-            'email' => $githubUser->getEmail(),
+            'name' => $socialiteUser->getName(),
+            'email' => $socialiteUser->getEmail(),
             'password' => Hash::make(Str::random(32)),
-            'github_id' => $githubUser->getId()
+            'github_id' => $socialiteUser->getId()
         ]);
     }
 
     /**
-     * @param SocialiteUser $githubUser
-     * @throws ModelNotFoundException
+     * @param SocialiteUser $socialiteUser
      * @return User
+     *@throws ModelNotFoundException
      */
-    private function addGithubIdToExistingUser(SocialiteUser $githubUser): User
+    private function addGithubIdToExistingUser(SocialiteUser $socialiteUser): User
     {
         /** @var User $user */
-        $user = User::query()->where('email', $githubUser->getEmail())->firstOrFail();
+        $user = User::query()->where('email', $socialiteUser->getEmail())->firstOrFail();
 
-        $user->update(['github_id' => $githubUser->getId()]);
+        $user->update(['github_id' => $socialiteUser->getId()]);
 
         return $user;
     }
 
     /**
-     * @param SocialiteUser $githubUser
-     * @throws ModelNotFoundException
+     * @param SocialiteUser $socialiteUser
      * @return User|Model
+     *@throws ModelNotFoundException
      */
-    private function findGithubUser(SocialiteUser $githubUser): User
+    private function findGithubUser(SocialiteUser $socialiteUser): User
     {
         return User::query()
-            ->where('email', $githubUser->getEmail())
-            ->where('github_id', $githubUser->getId())
+            ->where('email', $socialiteUser->getEmail())
+            ->where('github_id', $socialiteUser->getId())
             ->firstOrFail();
     }
 }
