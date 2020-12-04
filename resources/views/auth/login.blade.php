@@ -64,13 +64,17 @@
                             @endif
 
                             @if (Route::has('register'))
-                                <p class="w-full text-xs text-center text-gray-700 mt-8 -mb-4">
+                                <p class="w-full text-xs text-center text-gray-700 mt-6 mb-4">
                                     {{ __("Don't have an account?") }}
                                     <a class="text-blue-500 hover:text-blue-700 no-underline" href="{{ route('register') }}">
                                         {{ __('Register') }}
                                     </a>
                                 </p>
                             @endif
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-around">
+                            <a href="{{ route('github.redirect') }}">Sign In With GitHub <i class="fab fa-github"></i></a>
                         </div>
                     </form>
 
